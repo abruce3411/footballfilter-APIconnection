@@ -1,10 +1,10 @@
-from psycopg2 import *
+import psycopg2
 import json, os
 import dotenv
 
 
 def db_test():
-    load_dotenv()
+    dotenv.load_dotenv()
     try:
         connection = psycopg2.connect(
             database=os.getenv("database"),
