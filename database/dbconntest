@@ -1,0 +1,7 @@
+import psycopg2
+import json, os
+import dotenv
+
+
+def db_test():
+    dbn
