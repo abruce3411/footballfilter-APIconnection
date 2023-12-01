@@ -10,7 +10,7 @@ class DBWriter:
         self.conn = psycopg2.connect(
             host=os.getenv("dbhost"),
             database=os.getenv("database"),
-            user=os.getenv("postgres"),
+            user=os.getenv("user"),
             password=os.getenv("password"),
         )
 
