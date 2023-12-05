@@ -1,12 +1,20 @@
-import requests
+from loguru import logger
 from dotenv import load_dotenv
 import os
 import json
+import requests
+import sys
+
+logger.add("team_retrieval.log")
+logger.add("error.log", level="ERROR")
+logger.configure(
+    handlers=[{"sink": "team_retrieval.log", "level": "INFO", "colorize": True}]
+)
 
 
 def get_teams(season):
     load_dotenv()
-
+    logger.debug("give me my logs")
     url = "https://api-football-v1.p.rapidapi.com/v3/teams"
 
     querystring = {"league": str(39), "season": str(season)}
@@ -15,18 +23,20 @@ def get_teams(season):
         "X-RapidAPI-Key": os.getenv("RAPIDAPI_KEY"),
         "X-RapidAPI-Host": os.getenv("RAPIDAPI_Host"),
     }
-
+    logger.info("Retrieving team information for season {}".format(season))
     try:
         response = requests.get(url, headers=headers, params=querystring)
         response.raise_for_status()  # Raise error for unsuccessful status codes
+        logger.success("Retrieved team data successfully")
     except requests.exceptions.RequestException as err:
-        print(f"Error occurred during API call: {err}")
+        logger.error("Error occurred during API call: {}".format(err))
         return None
 
     try:
         data = response.json()
+        logger.info(f"Processed team information: {data}")
     except ValueError as err:
-        print(f"Error occurred while parsing JSON data: {err}")
+        logger.error(f"Error occurred during data processing: {err}")
         return None
 
     # Extract and format information from each team
@@ -52,6 +62,10 @@ def get_teams(season):
 
 
 if __name__ == "__main__":
+    logger.info("Logs")
     league_id = 39
     season = 2023
-    team_data = get_teams(league_id, season)
+    try:
+        team_data = get_teams(season, league_id)
+    except:
+        logger.error("RUNTIME ERROR TEST SUCCESSFUL - BAD ARGS")

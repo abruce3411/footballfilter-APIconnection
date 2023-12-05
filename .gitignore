@@ -106,3 +106,5 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+#Log files
+.log
