@@ -5,10 +5,14 @@ import json
 import requests
 import sys
 
-logger.add("team_retrieval.log")
-logger.add("error.log", level="ERROR")
+logger.add("team_retrieval.log", rotation="5 MB", level="INFO")
+logger.add("error.log", rotation="10 MB", level="ERROR")
 logger.configure(
-    handlers=[{"sink": "team_retrieval.log", "level": "INFO", "colorize": True}]
+    handlers=[
+        {"sink": "error.log", "level": "ERROR"},
+        {"sink": "team_retrieval.log", "level": "INFO"},
+        {"sink": sys.stdout, "level": "DEBUG", "colorize": True},
+    ]
 )
 
 
