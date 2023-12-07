@@ -5,7 +5,7 @@ import json
 import requests
 import sys
 
-logger.add("team_retrieval.log", rotation="5 MB", level="INFO")
+logger.add("central.log", rotation="5 MB", level="INFO")
 logger.add("error.log", rotation="10 MB", level="ERROR")
 logger.configure(
     handlers=[
@@ -72,4 +72,4 @@ if __name__ == "__main__":
     try:
         team_data = get_teams(season)
     except:
-        logger.error("RUNTIME ERROR TEST SUCCESSFUL - BAD ARGS")
+        logger.error()
