@@ -70,6 +70,6 @@ if __name__ == "__main__":
     league_id = 39
     season = 2023
     try:
-        team_data = get_teams(season, league_id)
+        team_data = get_teams(season)
     except:
         logger.error("RUNTIME ERROR TEST SUCCESSFUL - BAD ARGS")
