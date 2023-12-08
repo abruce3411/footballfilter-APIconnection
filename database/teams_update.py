@@ -60,8 +60,8 @@ def bulk_insert_teams(fetched_teams):
         with conn.cursor() as cursor:
             result = execute_values(cursor, insert_query, value_tuples)
             conn.commit()
-            logger.info(f"Bulk insert successful, inserted {result.rowcount} rows.")
-            return result.rowcount
+            logger.success(f"Bulk insert successful")
+            return result
     except Exception as e:
         logger.error(f"Bulk insert failed: {e}")
     finally:
