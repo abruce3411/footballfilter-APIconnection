@@ -4,6 +4,7 @@ import os
 import json
 import requests
 import sys
+from constantUtils import constants
 
 logger.add("central.log", rotation="5 MB", level="INFO")
 logger.add("error.log", rotation="10 MB", level="ERROR")
@@ -21,20 +22,34 @@ def get_teams(season):
     logger.debug("give me my logs")
     url = "https://api-football-v1.p.rapidapi.com/v3/teams"
 
-    querystring = {"league": str(39), "season": str(season)}
+    # Iterate through each league and make API calls
+    for league in constants.LEAGUES:
+        querystring = {"league": str(league.id), "season": str(season)}
+        headers = {
+            "X-RapidAPI-Key": os.getenv("RAPIDAPI_KEY"),
+            "X-RapidAPI-Host": os.getenv("RAPIDAPI_Host"),
+        }
 
-    headers = {
-        "X-RapidAPI-Key": os.getenv("RAPIDAPI_KEY"),
-        "X-RapidAPI-Host": os.getenv("RAPIDAPI_Host"),
-    }
-    logger.info("Retrieving team information for season {}".format(season))
-    try:
-        response = requests.get(url, headers=headers, params=querystring)
-        response.raise_for_status()  # Raise error for unsuccessful status codes
-        logger.success("Retrieved team data successfully")
-    except requests.exceptions.RequestException as err:
-        logger.error("Error occurred during API call: {}".format(err))
-        return None
+        logger.info(
+            "Retrieving team information for league {} and season {}".format(
+                league.name, season
+            )
+        )
+        try:
+            response = requests.get(url, headers=headers, params=querystring)
+            response.raise_for_status()  # Raise error for unsuccessful status codes
+            logger.success(
+                "Retrieved team data successfully for league {}".format(league.name)
+            )
+
+            # Process the response data (rest of your function logic)
+
+        except requests.exceptions.RequestException as err:
+            logger.error(
+                "Error occurred during API call for league {}: {}".format(
+                    league.name, err
+                )
+            )
 
     try:
         data = response.json()
