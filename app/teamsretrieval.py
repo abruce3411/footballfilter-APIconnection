@@ -47,17 +47,19 @@ def get_teams(season):
             # Process the response data
             data = response.json()
             logger.info(f"Processed team information: {data}")
-
+            league_id = data["parameters"]["league"]
             # Extract and format information from each team
             filtered_teams = []
             for team_data in data["response"]:
                 team_info = {
+                    "league_id": league_id,
                     "id": team_data["team"]["id"],
                     "name": team_data["team"]["name"],
                     "code": team_data["team"]["code"],
                     "stadium": team_data["venue"]["name"],
                     "stadium_city": team_data["venue"]["city"],
                 }
+
                 filtered_teams.append(team_info)
 
             # Add teams to the combined list

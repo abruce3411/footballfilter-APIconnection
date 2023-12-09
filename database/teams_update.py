@@ -13,7 +13,7 @@ logger.add("error.log", rotation="10 MB", level="ERROR")
 logger.configure(
     handlers=[
         {"sink": "error.log", "level": "ERROR"},
-        {"sink": "team_retrieval.log", "level": "INFO"},
+        {"sink": "central.log", "level": "INFO"},
         {"sink": sys.stdout, "level": "DEBUG", "colorize": True},
     ]
 )
