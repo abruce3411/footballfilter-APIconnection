@@ -1,6 +1,7 @@
-import psycopg2
 import os
 import dotenv
+import psycopg2
+from psycopg2 import extras
 
 dotenv.load_dotenv()
 
@@ -22,13 +23,19 @@ class DBWriter:
         """
         cursor = self.conn.cursor()
         leagues_data = [
-            (1, "Premier League", 2023),
-            (2, "La Liga", 2023),
-            (3, "Serie A", 2023),
-            (4, "Bundesliga", 2023),
-            (5, "Ligue 1", 2023),
+            (39, "Premier League", 2023),
+            (140, "La Liga", 2023),
+            (135, "Serie A", 2023),
+            (78, "Bundesliga", 2023),
+            (61, "Ligue 1", 2023),
         ]
-        query = "INSERT INTO leagues (id, name, season_year) VALUES %s"
+        query = """
+        INSERT INTO leagues (id, name, season_year) 
+        VALUES %s 
+        ON CONFLICT (id) DO UPDATE
+        SET
+        
+        """
         psycopg2.extras.execute_values(cursor, query, leagues_data)
 
         self.conn.commit()
