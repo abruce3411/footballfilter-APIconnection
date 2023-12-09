@@ -19,12 +19,7 @@ def main():
         print("Failed to get teams, aborting database update.")
         return
 
-    # insert_count = bulk_insert_teams(retrieved_teams)
-
-    # if insert_count is None:
-    #     print("Database update failed, but team retrieval succeeded.")
-    # elif insert_count > 0:
-    #     print(f"Successfully inserted {insert_count} teams into the database.")
+    bulk_insert_teams(retrieved_teams)
 
 
 if __name__ == "__main__":

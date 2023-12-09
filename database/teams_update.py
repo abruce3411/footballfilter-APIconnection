@@ -41,14 +41,19 @@ def bulk_insert_teams(fetched_teams):
         return None
 
     try:
-        insert_query = """
-            INSERT INTO teams (league_id, id, name, code, stadium, stadium_city)
-            VALUES %s
+        insert_query = """ 
+        INSERT INTO teams (league_id, id, name, code, stadium, stadium_city)    
+        VALUES %s    
+        ON CONFLICT ("id") DO UPDATE
+        SET league_id = EXCLUDED.league_id,            
+        name = EXCLUDED.name,            
+        code = EXCLUDED.code,            
+        stadium = EXCLUDED.stadium,            
+        stadium_city = EXCLUDED.stadium_city;
         """
-        leagues = constants.LEAGUES
         value_tuples = [
             (
-                39,
+                team["league_id"],
                 team["id"],
                 team["name"],
                 team["code"],
@@ -61,9 +66,11 @@ def bulk_insert_teams(fetched_teams):
         with conn.cursor() as cursor:
             result = execute_values(cursor, insert_query, value_tuples)
             conn.commit()
-            logger.success(f"Bulk insert successful")
+            logger.success("Bulk insert/update successful")
             return result
     except Exception as e:
-        logger.error(f"Bulk insert failed: {e}")
+        logger.error(f"Bulk insert/update failed: {e}")
+        logger.error(f"Failed query: {insert_query}")
+        logger.error(f"Failed data: {value_tuples}")
     finally:
         conn.close()
