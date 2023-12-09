@@ -4,6 +4,7 @@ import dotenv
 import os
 import sys
 from loguru import logger
+from constantUtils import constants
 
 dotenv.load_dotenv()
 
@@ -44,7 +45,7 @@ def bulk_insert_teams(fetched_teams):
             INSERT INTO teams (league_id, id, name, code, stadium, stadium_city)
             VALUES %s
         """
-
+        leagues = constants.LEAGUES
         value_tuples = [
             (
                 39,
