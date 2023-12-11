@@ -19,7 +19,7 @@ logger.configure(
 )
 
 
-def bulk_insert_teams(fetched_teams):
+def update_teams(fetched_teams):
     """Bulk inserts team data into the DB, adding hardcoded league_id.
     Args:
         fetched_teams (list): List of team dicts, each with keys for

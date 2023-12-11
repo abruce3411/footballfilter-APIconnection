@@ -1,0 +1,23 @@
+import psycopg2
+from psycopg2.extras import execute_values
+import dotenv
+import os
+import sys
+from loguru import logger
+from constantUtils import constants
+
+dotenv.load_dotenv()
+
+logger.add("central.log", rotation="5 MB", level="INFO")
+logger.add("error.log", rotation="10 MB", level="ERROR")
+logger.configure(
+    handlers=[
+        {"sink": "error.log", "level": "ERROR"},
+        {"sink": "central.log", "level": "INFO"},
+        {"sink": sys.stdout, "level": "DEBUG", "colorize": True},
+    ]
+)
+
+
+def update_standings(season):
+    sadf
