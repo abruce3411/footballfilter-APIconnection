@@ -20,4 +20,4 @@ logger.configure(
 
 
 def update_standings(season):
-    sadf
+    

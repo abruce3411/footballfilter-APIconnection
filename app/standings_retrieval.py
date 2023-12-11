@@ -60,10 +60,20 @@ def get_standings(season):
             for team in standings:
                 rank = team["rank"]
                 team_name = team["team"]["name"]
+                league_id = data["parameters"][
+                    "league"
+                ]  # Assuming league_id is in main response
                 points = team["points"]
                 goals_diff = team["goalsDiff"]
                 played = team["all"]["played"]
                 form = team["form"]
+
+                # Extracting from the correct nested structure
+                goals_for = team["all"]["goals"]["for"]
+                goals_against = team["all"]["goals"]["against"]
+                wins = team["all"]["win"]
+                draws = team["all"]["draw"]
+                losses = team["all"]["lose"]
 
                 team_info = {
                     "league_id": league_id,
@@ -73,6 +83,11 @@ def get_standings(season):
                     "goalsDiff": goals_diff,
                     "played": played,
                     "form": form,
+                    "goals_for": goals_for,
+                    "goals_against": goals_against,
+                    "wins": wins,
+                    "draws": draws,
+                    "losses": losses,
                 }
                 filtered_standings.append(team_info)
             # Add standings to the combined list
