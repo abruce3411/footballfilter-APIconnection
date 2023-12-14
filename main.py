@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from app.teamsretrieval import get_teams
 from app.standings_retrieval import get_standings
 from database.teams_update import update_teams
+from database.standings_update import 
 
 
 load_dotenv()
@@ -23,6 +24,7 @@ def main():
     # update_teams(retrieved_teams)
 
     retrieved_standings = get_standings(current_season)
+
 
 
 if __name__ == "__main__":
