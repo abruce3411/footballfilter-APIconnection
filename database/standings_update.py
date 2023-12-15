@@ -20,7 +20,7 @@ def update_standings(fetched_standings):
 
     Args:
         fetched_standings (list): List of standings dicts, each with keys for
-            'league_id', 'rank', 'team_name', 'points', 'goalsDiff', 'played',
+            'league_id', 'position', 'team_name', 'points', 'goalsDiff', 'played',
             'form', 'goals_for', 'goals_against', 'wins', 'draws', 'losses'
 
     Returns:
@@ -41,19 +41,8 @@ def update_standings(fetched_standings):
 
     try:
         insert_query = """
-        INSERT INTO standings (league_id, rank, team_name, points, goalsDiff, played, form, goals_for, goals_against, wins, draws, losses)
+        INSERT INTO league_standings (league_id, rank, team_name, points, goalsDiff, played, form, goals_for, goals_against, wins, draws, losses)
         VALUES %s
-        ON CONFLICT ("league_id", "rank") DO UPDATE
-        SET team_name = EXCLUDED.team_name,
-            points = EXCLUDED.points,
-            goalsDiff = EXCLUDED.goalsDiff,
-            played = EXCLUDED.played,
-            form = EXCLUDED.form,
-            goals_for = EXCLUDED.goals_for,
-            goals_against = EXCLUDED.goals_against,
-            wins = EXCLUDED.wins,
-            draws = EXCLUDED.draws,
-            losses = EXCLUDED.losses;
         """
         value_tuples = [
             (
@@ -81,6 +70,12 @@ def update_standings(fetched_standings):
     except Exception as e:
         logger.error(f"Bulk insert/update failed: {e}")
         logger.error(f"Failed query: {insert_query}")
-        logger.error(f"Failed data: {value_tuples}")
+        if value_tuples:  # Check if value_tuples is not empty
+            logger.error(f"Failed data: {value_tuples}")
     finally:
         conn.close()
+        with conn.cursor() as cursor:
+            result = execute_values(cursor, insert_query, value_tuples)
+            conn.commit()
+            logger.success("Bulk insert/update successful")
+            return result
