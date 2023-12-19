@@ -79,7 +79,3 @@ def get_teams(season):
             return None
 
     return all_teams_data
-
-
-if __name__ == "__main__":
-    get_teams(2023)
